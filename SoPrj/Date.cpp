@@ -27,7 +27,7 @@ void Date::parseDate() {
 }
     
 void  Date::showSch(string specifier){
-        
+    cout << endl;
     if (specifier == "month") {
         // Keyword
         string week;
@@ -90,8 +90,7 @@ void  Date::showSch(string specifier){
     else {
         // Something else entered --> Error
     }
-        
-
+    cout << endl << endl;
 }
 void  Date::addSch(string content, string keyword){
     this->schedules.push_back(Schedule(content, keyword));
