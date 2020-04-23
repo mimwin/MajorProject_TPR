@@ -167,8 +167,7 @@ void Manager::showSchedule() {
             }
             
         } 
-        if (stspecifier != "month" || stspecifier != "week" ||
-            stspecifier != "day") { // 오류5
+        if (stspecifier != "month" && stspecifier != "week" && stspecifier != "day") { // 오류5
             cout << "Invalid scope information entered." << endl;
             custom_pause("Please enter again.");
             continue;
