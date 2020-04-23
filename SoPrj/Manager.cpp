@@ -138,12 +138,18 @@ void Manager::showSchedule() {
                     m2 = atoi(m.c_str());
                     y2 = atoi(y.c_str());
 
-                    if (!(y2 != 2020 || m2 < 1 || m2 > 12 ||
+                    if (y2 != 2020 || m2 < 1 || m2 > 12 || d2 > month_last[m2 - 1] || d2 < 0) {
+                        cout << "Invalid date entered. ";
+                        custom_pause("Please enter again.");                         
+                        break;
+                    }
+
+                    /*if (!(y2 != 2020 || m2 < 1 || m2 > 12 ||
                         d2 > month_last[m2 - 1])||d2<0) { //오류2
                         cout << "Invalid date entered. ";
                         custom_pause("Please enter again.");                         
                         break;
-                    } 
+                    }*/
                 }
             } else if (i < 9) { 
                 if (ch[i] >= '0' && ch[i] <= '9') { //오류3
