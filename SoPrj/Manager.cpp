@@ -99,6 +99,7 @@ void Manager::showSchedule() {
         string scope;
 
         getline(cin, scope);
+        //cout << scope;
 
         // 3-length TODO: Handling length
         if (scope.length() > 20) {
@@ -513,6 +514,8 @@ void Manager::editSchedule() {
 
     while (true) {
         cin >> date_str;
+        cin.clear();
+        cin.ignore(INT_MAX, '\n');
         counter++;
 
         if (counter > 5) {
@@ -539,9 +542,23 @@ void Manager::editSchedule() {
             continue; // Re-Enter it again.
         } else {
             // Update variable 
-            str_year = date_str.at(0) + date_str.at(1) + date_str.at(2) + date_str.at(3); y2 = atoi(str_year.c_str());
-            str_month = date_str.at(4) + date_str.at(5); m2 = atoi(str_year.c_str());
-            str_day = date_str.at(6) + date_str.at(7); d2 = atoi(str_year.c_str());
+            for (int i = 0; i < date_str.length(); i++) {
+                if (i < 4) {
+                    str_year += date_str.at(i);
+                } else if (i < 6) {
+                    str_month += date_str.at(i);
+                } else if (i < 8) {
+                    str_day += date_str.at(i);
+                }
+            }
+            y2 = atoi(str_year.c_str());
+            m2 = atoi(str_month.c_str());
+            d2 = atoi(str_day.c_str());
+
+            /*
+            str_year = date_str.at(0) + date_str.at(1) + date_str.at(2) + date_str.at(3); 
+            str_month = date_str.at(4) + date_str.at(5); 
+            str_day = date_str.at(6) + date_str.at(7); */
         }
 
         // Since this state, year-month-day(int) variable is set. otherwise --> re enter again.
@@ -558,6 +575,8 @@ void Manager::editSchedule() {
             if (year[i].getDate() == date_form) {
                 date_idx = i;
                 break;
+            } else {
+                date_idx = 0;
             }
         }
         if (year[date_idx].getSchedules().size() == 0) {
@@ -630,6 +649,11 @@ void Manager::editSchedule() {
                 cout << "Invalid schedule entered. " << endl;
                 custom_pause("Please enter again");
                 continue;
+            } else {
+                // Clear before we get into getline or next cin.
+                cin.clear();
+                cin.ignore(INT_MAX, '\n');
+                break; // All checking finished.
             }
         }
 
@@ -659,6 +683,8 @@ void Manager::editSchedule() {
             }
             if (!tmp_flag) {
                 continue; // fallback
+            } else {
+                break; // all finished
             }
         }
 
@@ -687,6 +713,8 @@ void Manager::editSchedule() {
 
             if (!tmp_flag) {
                 continue; // fallback
+            } else {
+                break;
             }
         }
 
@@ -737,19 +765,28 @@ void Manager::editSchedule() {
                     custom_pause("Please enter again.");
                     continue;
                 }
+            } else {
+                break;
             }
         }
 
-        for (int i = date_idx + r; i < 366; i += r) {
-            year[i].addSch(content, keyword);
+        // Logic error
+        if (r == 0) {
+            // Do nothing --> may change with r != 0
+        } else {
+            for (int i = date_idx + r; i < 366; i += r) {
+                year[i].addSch(content, keyword);
+            }
         }
-
+        
         // Another round?
         char roundgo;
         bool goornot = true;
         while (true) {
             cout << "Do you want to edit another schedule? (Y, y, / N, n) > ";
             cin >> roundgo;
+            cin.clear();
+            cin.ignore(INT_MAX, '\n');
             if (roundgo == 'Y' || roundgo == 'y') {
                 goornot = true;
                 break;

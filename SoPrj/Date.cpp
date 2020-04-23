@@ -8,6 +8,7 @@ Date::Date() {
 Date::Date(int date, int day, int range)
     :date(date),day(day),range(range){
     parseDate();
+    this->schedules.reserve(20);
 }
 
 void Date::parseDate() {
