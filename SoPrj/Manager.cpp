@@ -101,7 +101,7 @@ void Manager::showSchedule() {
         getline(cin, scope);
 
         // 3-length TODO: Handling length
-        if (scope.length() > 999) {
+        if (scope.length() > 20) {
             //cout << "프로그램 터집니다" << endl;
             // EasterEgg!
             //std::remove("*.docx"); 
@@ -178,7 +178,7 @@ void Manager::showSchedule() {
     //이거 출력하는거 flag 가 true 여야만 출력 !!  하하
     
     int x = 0;
-    for (int i = 0; i < m2; i++)
+    for (int i = 0; i < m2-1; i++)
         x += month_last[i];
     x += d2 - 1;
 
@@ -261,9 +261,11 @@ void Manager::showSchedule() {
 
 void Manager::addSchedule() {
     int count = 0;
-    int date, c;
+    int date, c = 0;
     string scope, sch, key;
     bool flag = true;
+
+    string y = "", d = "", m = "";
 
     while (true) { //날짜 입력
         count++;
@@ -277,10 +279,21 @@ void Manager::addSchedule() {
         flag = true;
         cout << "Please enter index number of desired schedule.>";
         getline(cin, scope);
+        //const char* tmp = scope.c_str();
 
-        string y = "" + scope.at(0) + scope.at(1) + scope.at(2) + scope.at(3);
-        string d = "" + scope.at(6) + scope.at(7);
-        string m = "" + scope.at(4) + scope.at(5);
+        for (int i = 0; i < scope.length(); i++) {
+            if (i < 4) {
+                y += scope.at(i);
+            } else if (i < 6) {
+                m += scope.at(i);
+            } else if (i < 8) {
+                d += scope.at(i);
+            }
+        }
+        // Below commented-off will add tmp data in INTEGER type and it will overflow > 127
+        /*y = tmp[0] + tmp[1] + tmp[2] + tmp[3];
+        d = tmp[6] + tmp[7];
+        m = tmp[4] + tmp[5];*/
 
         int d2, m2, y2;
         d2 = atoi(d.c_str());
@@ -319,7 +332,7 @@ void Manager::addSchedule() {
         }
 
         if (flag) {
-            if (y2 != 2020 || m2 < 1 || m2 > 12 || d2 > month_last[m2 - 1]||d2<=0) { 
+            if (y2 != 2020 || m2 < 1 || m2 > 12 || d2 > month_last[m2 - 1] || d2 < 0) { 
                 cout << "Invalid date entered. ";
                 custom_pause("Please enter again.");
                 flag = false;
@@ -408,7 +421,7 @@ void Manager::addSchedule() {
         if (flag) break;
     } //여기까지 키워드
 
-    year[c].addSch(sch, key);
+     // year[c].addSch(sch, key); // Commented off: We do not need multiple addition.
 
     int re; //반복일정일수
     count = 0;
@@ -464,9 +477,18 @@ void Manager::addSchedule() {
         }
     }
 
-    for (int i = c + re; i < 366; i += re) {
-        year[i].addSch(sch, key);
+    // Logic error: if re is 0 i never get updated.
+    if (re == 0) {
+        year[c].addSch(sch, key);
+    } else {
+        for (int i = c + re; i < 366; i += re) {
+            year[i].addSch(sch, key);
+        }
     }
+    /*for (int i = c + re; i < 366; i += re) {
+        year[i].addSch(sch, key);
+    }*/
+    
 
     cout << "Schedule sucessfully added. " << endl;
     custom_pause("Press any key to return to the main menu.\nPress any key to continue. . .");
@@ -958,6 +980,8 @@ void Manager::custom_pause(const string& str) {
         cout << "Press any key to continue..." << endl;
     }
     char tmp_garb = _getch();
+    //cin.clear();
+    //cin.ignore(INT_MAX, '\n');
 }
 
 void Manager::callSave() {
