@@ -18,6 +18,7 @@ int main(void) {
     Manager manager;
     string menu;
     while (true) {
+        cout << endl;
         cout << "(1) Show Schedule\n";
         cout << "(2) Add Schedule\n";
         cout << "(3) Edit Schedule\n";
@@ -28,16 +29,21 @@ int main(void) {
         cin >> menu;
         cin.clear();
         cin.ignore(INT_MAX, '\n');
-
-        if (menu.at(0) == '0' && hasNext(menu)) {
+        if (menu.length() > 1) {
+            // Re-Input --> NEED TO DISCUSS
+            continue;
+        } else if (menu.at(0) == '0' && hasNext(menu)) {
             // Prefix 0 detected.
             cout << "Invalid number format(ex: prefix 0) entered. Please enter again." << endl;
+            continue;
         } else if (menu.at(0) < '0' || menu.at(0) > '9') {
             // Only number are allowed
             cout << "Only numbers are allowed. Please enter again." << endl; 
-        } else if (menu.at(0) < '1' || menu.at(0) > '5') {
+            continue;
+        } else if (menu.at(0) < '1' || menu.at(0) > '6') {
             // Number out of range
             cout << "Argument out of range. Please enter again." << endl;
+            continue;
         } else if (menu.at(0) == '1') {
             manager.showSchedule();
         } else if (menu.at(0) == '2') {
@@ -49,6 +55,9 @@ int main(void) {
         } else if (menu.at(0) == '5') {
             // exit
             manager.callSave();
+            exit(0);
+        } else if (menu.at(0) == '6') {
+            manager.callLoad();
         }
     }
     return 0;

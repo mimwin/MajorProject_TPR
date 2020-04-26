@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Date.h"
 #include "FileIO.h"
 #include <algorithm>
@@ -29,6 +30,9 @@ public:
 
 	void callSave();
 	void callLoad();
+	bool parseString(int* tmp, int& array_idx_pointer, string& input, int year_idx);
+	void removeSame(int* arr, int& idx, vector<int>&tmp);
+	bool isHas(vector<int>& tmpVector, int target);
 };
 
 
